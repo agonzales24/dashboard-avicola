@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LA FLORIDA - GALPON_01</title>
+<style>
+:root{--bg:#f3f6f9;--card:#fff;--text:#17212b;--muted:#6b7785;--accent:#1f7a4d;--danger:#c0392b;--line:#e1e7ec}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+.header{background:linear-gradient(135deg,#185c3b,#2e8b57);color:#fff;padding:28px 22px}
+.header h1{margin:0;font-size:28px}.header p{margin:7px 0 0;opacity:.88}
+.container{max-width:1100px;margin:24px auto;padding:0 16px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 4px 18px rgba(30,50,70,.08);border:1px solid var(--line)}
+.label{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.value{font-size:29px;font-weight:700;margin-top:8px}.danger{color:var(--danger)}.green{color:var(--accent)}
+.form{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.mort-row{display:flex;gap:10px;grid-column:span 2}.mort-row>div{flex:1}
+input{width:100%;padding:12px;border:1px solid #ccd6df;border-radius:10px;font-size:16px}
+label{font-size:13px;font-weight:700;display:block;margin-bottom:7px}
+.section{margin-top:20px}
+.progress{height:18px;background:#e8edf1;border-radius:99px;overflow:hidden;margin-top:10px}.bar{height:100%;background:var(--danger);width:0%;transition:.3s}
+.big{font-size:22px;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:8px}th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:13px}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
+.btn-guardar{grid-column:1 / -1;background:var(--accent);color:#fff;border:none;padding:15px;font-size:16px;font-weight:bold;border-radius:10px;cursor:pointer;margin-top:10px;transition:0.2s;}
+.btn-guardar:hover{background:#185c3b;}
+@media(max-width:800px){.grid,.form{grid-template-columns:repeat(2,1fr)}.mort-row{grid-column:span 2}}@media(max-width:500px){.grid,.form{grid-template-columns:1fr}.mort-row{grid-column:span 1}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="container">
+    <h1>LA FLORIDA - GALPON_01</h1>
+    <p>Dashboard de crianza de pollos de engorde</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <div class="label">Datos de crianza</div>
+    <div class="form">
+      <div><label>Hembras – cantidad a llenar</label><input id="hembras" type="number" min="0" value="4000"></div>
+      <div><label>Machos – cantidad a llenar</label><input id="machos" type="number" min="0" value="4000"></div>
+      <div><label>Fecha de inicio</label><input id="inicio" type="date"></div>
+      <div class="mort-row">
+        <div><label>Mortalidad – hembras</label><input id="mortHembras" type="number" min="0" value="0"></div>
+        <div><label>Mortalidad – machos</label><input id="mortMachos" type="number" min="0" value="0"></div>
+      </div>
+      <button id="btnGuardar" class="btn-guardar">Guardar Datos en Base de Datos</button>
+    </div>
+  </div>
+
+  <div class="grid section">
+    <div class="card"><div class="label">Población inicial</div><div class="value green" id="total">8,000</div><div class="label">aves</div></div>
+    <div class="card"><div class="label">Mortalidad</div><div class="value danger" id="mort">0</div><div class="label" id="mortPct">0.00%</div></div>
+    <div class="card"><div class="label">Aves vivas estimadas</div><div class="value" id="vivas">8,000</div><div class="label">aves</div></div>
+    <div class="card"><div class="label">Días de crianza</div><div class="value" id="dias">0</div><div class="label">desde el inicio</div></div>
+  </div>
+
+  <!-- El resto del HTML se mantiene intacto -->
+  <div class="card section">
+    <div class="label">Indicador de mortalidad</div>
+    <div class="big"><span id="mortPct2">0.00%</span> de la población inicial</div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="card section">
+    <div class="label">Resumen del lote</div>
+    <table>
+      <tr><th>Indicador</th><th>Resultado</th></tr>
+      <tr><td>Hembras</td><td id="tH">4,000</td></tr>
+      <tr><td>Machos</td><td id="tM">4,000</td></tr>
+      <tr><td>Total inicial</td><td id="tTotal">8,000</td></tr>
+      <tr><td>Mortalidad – hembras</td><td id="tMortH">0</td></tr>
+      <tr><td>Mortalidad – machos</td><td id="tMortM">0</td></tr>
+      <tr><td>Mortalidad total</td><td id="tMort">0</td></tr>
+      <tr><td>Hembras vivas estimadas</td><td id="tVivasH">4,000</td></tr>
+      <tr><td>Machos vivos estimados</td><td id="tVivasM">4,000</td></tr>
+      <tr><td>Saldo vivo total</td><td id="tVivas">8,000</td></tr>
+      <tr><td>Fecha de inicio</td><td id="tFecha">—</td></tr>
+      <tr><td>Días transcurridos</td><td id="tDias">0</td></tr>
+    </table>
+  </div>
+</div>
+<div class="footer">Dashboard sincronizado con Vercel Postgres.</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString('es-PE');
+const today=new Date();
+const isoToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+$('inicio').value=isoToday;
+
+function update(){
+  const h=+$('hembras').value||0,m=+$('machos').value||0;
+  const moH=Math.max(0,+$('mortHembras').value||0);
+  const moM=Math.max(0,+$('mortMachos').value||0);
+  const mo=moH+moM;
+  const total=h+m;
+  const mortPct=total?Math.min(100,mo/total*100):0;
+  const vivasH=Math.max(0,h-moH);
+  const vivasM=Math.max(0,m-moM);
+  const vivas=vivasH+vivasM;
+  const ini=$('inicio').value;
+  let dias=0;
+  if(ini){
+    const d0=new Date(ini+'T00:00:00');
+    const d1=new Date(isoToday+'T00:00:00');
+    dias=Math.max(0,Math.floor((d1-d0)/86400000));
+  }
+  $('total').textContent=fmt(total); $('mort').textContent=fmt(mo);
+  $('mortPct').textContent=mortPct.toFixed(2)+'%'; $('mortPct2').textContent=mortPct.toFixed(2)+'%';
+  $('vivas').textContent=fmt(vivas); $('dias').textContent=dias;
+  $('bar').style.width=mortPct+'%';
+  $('tH').textContent=fmt(h); $('tM').textContent=fmt(m); $('tTotal').textContent=fmt(total);
+  $('tMortH').textContent=fmt(moH); $('tMortM').textContent=fmt(moM);
+  $('tMort').textContent=fmt(mo); $('tVivasH').textContent=fmt(vivasH); $('tVivasM').textContent=fmt(vivasM);
+  $('tVivas').textContent=fmt(vivas);
+  $('tFecha').textContent=ini||'—'; $('tDias').textContent=dias;
+}
+['hembras','machos','inicio','mortHembras','mortMachos'].forEach(id=>$(id).addEventListener('input',update));
+update();
+
+// Lógica para enviar los datos al servidor (Vercel)
+$('btnGuardar').addEventListener('click', async () => {
+  const boton = $('btnGuardar');
+  boton.textContent = 'Guardando...';
+  boton.disabled = true;
+
+  const datos = {
+    hembras: parseInt($('hembras').value) || 0,
+    machos: parseInt($('machos').value) || 0,
+    inicio: $('inicio').value,
+    mortHembras: parseInt($('mortHembras').value) || 0,
+    mortMachos: parseInt($('mortMachos').value) || 0
+  };
+
+  try {
+    const response = await fetch('/api/guardar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos)
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      alert('¡Datos guardados exitosamente!');
+    } else {
+      alert('Error al guardar: ' + result.error);
+    }
+  } catch (error) {
+    alert('Error de conexión con el servidor.');
+  } finally {
+    boton.textContent = 'Guardar Datos en Base de Datos';
+    boton.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
