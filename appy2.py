@@ -147,7 +147,6 @@ def obtener_datos_midagri():
 
     return None, None, None, "Falla al descargar el contenido del archivo PDF."
 
-  Exception as e
   except Exception as e:
     return None, None, None, f"Ocurrió un error técnico: {str(e)}"
 
@@ -163,7 +162,10 @@ if st.button("🔄 Cargar / Actualizar Datos"):
   with st.spinner("Conectando con el MIDAGRI y analizando el último boletín..."):
     fecha, mayorista, granja, pdf_url = obtener_datos_midagri()
 
-    if fecha and not pdf_url.startswith("Error") and not pdf_url.startswith("No") and not pdf_url.startswith("Falla") and not pdf_url.startswith("Ocurrió"):
+    # Validación de que se obtuvo la información correctamente y no un mensaje de error
+    if fecha and not pdf_url.startswith(
+        ("Error", "No", "Falla", "Ocurrió")
+    ):
       st.success("¡Datos obtenidos correctamente!")
 
       st.markdown(f"### 📅 Fecha del Boletín: *{fecha}*")
